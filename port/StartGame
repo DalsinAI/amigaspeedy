@@ -1,0 +1,3 @@
+; Launch through the single shared Amiga OpenSurge installation.
+DH1:OpenSurgeRC1/opensurge --game DH1:Speedy/game.zip
+

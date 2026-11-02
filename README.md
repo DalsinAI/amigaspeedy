@@ -19,18 +19,20 @@ their respective creators and owners.
 
 ## Prepare a port
 
-Build or obtain the validated Amiga OpenSurge executable, extract the upstream
-archive, then run:
+Install the QPAK-enabled shared Amiga OpenSurge engine at
+`DH1:OpenSurgeRC1`, extract the upstream archive, then run:
 
 ```sh
 ./scripts/prepare-amiga-port.sh \
   "/path/to/Speedy the RollerSkater Full Version" \
-  /path/to/amigaopensurge/dist/opensurge \
   ./dist/Speedy
 ```
 
-The script copies the platform-neutral game content, excludes Windows runtime
-files, and installs the shared Amiga engine as `opensurge`.
+The script copies only platform-neutral game content, excludes Windows runtime
+files, adds the missing modern metadata, and writes an AmigaDOS `StartGame`
+launcher. The launcher calls the shared engine with `--game`, enabling
+OpenSurge's built-in 0.5.x compatibility pack. Run it with
+`Execute DH1:Speedy/StartGame`.
 
 ## Status
 
