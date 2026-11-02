@@ -1,0 +1,7 @@
+upstream/
+build/
+dist/
+*.rar
+*.zip
+*.tar.gz
+
