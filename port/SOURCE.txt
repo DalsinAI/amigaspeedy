@@ -1,0 +1,36 @@
+Source code for the OpenSurge engine in this archive
+====================================================
+
+The program Engine/opensurge is Open Surge Engine 0.6.1.3 (Alexandre
+Martins and contributors), ported to AmigaOS 3 by the AmiCradle Team. It is
+free software under the GNU General Public License, version 3 or later
+(Licences/GPL-3.0.txt). It was built from:
+
+  @ENGINE_REPO@ at commit
+  @ENGINE_COMMIT@
+  (tag @ENGINE_TAG@)
+  https://github.com/@ENGINE_REPO@/tree/@ENGINE_COMMIT@
+
+with its own scripts (ports/amigaos3/build-dependencies.sh,
+build-first-pass.sh, package.sh), which fetch and pin every library linked
+into it:
+
+  SurgeScript 0.6.1      https://github.com/alemart/surgescript (v0.6.1)
+  PhysicsFS 3.2.0        https://github.com/icculus/physfs (release-3.2.0)
+  libogg 1.3.5           https://github.com/xiph/ogg (v1.3.5)
+  libvorbis 1.3.7        https://github.com/xiph/vorbis (v1.3.7)
+  Allegro 5 (Amiga port) https://github.com/DalsinAI/amigaallegro
+                         commit @ALLEGRO_COMMIT@
+
+The complete corresponding source is available from those addresses at no
+charge for as long as this archive is offered. If any of them stops
+working, ask the AmiCradle Team through
+https://github.com/@ENGINE_REPO@/issues for a copy.
+
+The engine's game assets in Engine/ (graphics, sounds, music, fonts) are
+under the licences in Engine/licenses/, as listed in Engine/README.md and
+upstream's CONTRIBUTING.md.
+
+The launcher, Installer script and packaging (StartGame, Install-*,
+Tools/) are MIT-licensed (Licences/Port-scripts-MIT.txt); their source is
+the port's repository at commit @PORT_COMMIT@.
