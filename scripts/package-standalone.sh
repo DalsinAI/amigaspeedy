@@ -118,6 +118,7 @@ find "$stage" -exec touch -h -d "@$epoch" {} +
 mkdir -p "$output_dir"
 archive="$DRAWER-AmigaOS3-$RELEASE_VERSION.lha"
 python3 "$root/tools/make_lha.py" "$stage" "$output_dir/$archive" "$epoch"
+(cd "$output_dir" && sha256sum "$archive" > "$archive.sha256")
 (cd "$stage" && find . -type f | LC_ALL=C sort | sed 's|^\./||' |
     while IFS= read -r f; do
         printf '%s  %s  %s\n' "$(sha256sum < "$f" | cut -d' ' -f1)" "$(wc -c < "$f" | tr -d ' ')" "$f"
