@@ -29,3 +29,14 @@ fixed-path launcher for the shared engine.
 - [ ] Install-Speedy not run in the lab (same script as the other three, without the game-data step)
 
 Lab notes (5 November 2026): the engine finds game.zip beside it and keeps its settings, logfile and compatibility pack in Engine/.userdata/game. The lab host was very loaded (load average 40-70) and its window capture failed at times, so the first level was not reached in the time given; the shared-engine route reached the level's asset loading on 2 November. The LhA is 267 MB because game.zip and the archive are stored, not compressed.
+
+## Standalone RC2 (6 November 2026): SHA-256 check in the Installer
+
+- [x] Tools/SHA256 (port/sha256, built by scripts/build-sha256.sh with os32-gcc16-open6; 6612 bytes, same bytes on every build) in the drawer, Licences/SHA256.txt beside the other licences
+- [x] Lab t4-opensurge: Tools/SHA256 gives OK/0 for the right hash, FAILED/10 for a wrong one, 20 for a missing file; inside an Installer script `(run ... (safe))` returns those codes
+- [x] All three downloads (AS2R zip, Aishi & Reimu zip, Sonic The Last Hope.rar) check OK on the Amiga, 18-25 s each in the lab
+- [x] Installer texts kept under 512 characters per literal: Installer 47.19 refused Install-SonicTLH's longer first message ("Symbol or String too long")
+- [x] Install-Speedy run by hand from its icon (every requester clicked, no pre-answered copy): Intermediate user, "Check the SHA-256 of game.zip ...?" -> Check it, "The SHA-256 of game.zip matches the one the archive was made with", Work:Games accepted, drawer copied, "Speedy the Rollerskater standalone-rc2 is installed in Work:Games/Speedy". `Tools/SHA256 CHECK=game.zip.sha256` on the installed copy: game.zip OK
+- [x] StartGame in the installed drawer (Shell: CD Work:Games/Speedy, Execute StartGame): title, main menu, PLAY, the opening cutscene and how-to-play, then the first level (levels/beach1.lev) playing: Speedy on the beach, HUD timer running, moved right and jumped; Esc brought up "Do you really want to quit?", No, then back to the title and the window's close gadget: logfile ends "tchau!", engine process gone
+- [ ] The StartGame icon did not start the game from the lab's Workbench (GFOpenBench preview): its default tool C:IconX is not a file in this lab's C: (IconX is only resident there); CREDITS opened from its icon. Starting from a Shell works. Not changed in this rc
+- Host load during the test: load average 80-118 on 12 cores (no quieter moment came in 30 minutes of waiting); the game was still responsive enough to play the first level
