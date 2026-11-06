@@ -1,0 +1,37 @@
+Tools/SHA256
+============
+
+Tools/SHA256 is the small AmigaOS command the Installer runs to check a
+SHA-256. It was written for these ports by the AmiCradle Team from the
+SHA-256 definition in FIPS 180-4; it contains no third-party code. Its
+source is port/sha256/sha256.c in the port's repository, and
+scripts/build-sha256.sh builds it with GFOpenAmigaGCC 16.2.0 (68020 code,
+dos.library only, so it runs on any AmigaOS 3 Amiga).
+
+It can be used from a Shell as well:
+
+  Tools/SHA256 FILE                    prints the file's SHA-256
+  Tools/SHA256 FILE EXPECT=<sha256>    OK (0) or FAILED (10)
+  Tools/SHA256 CHECK=<list>            checks a sha256sum list
+
+MIT License
+
+Copyright (c) 2026 AmiCradle Team
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

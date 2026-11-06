@@ -17,7 +17,10 @@ Installing
 ----------
 Double-click Install-Speedy beside the Speedy drawer: it checks the CPU,
 FPU and GFOpenGPU, asks where the Speedy drawer should go (Work:Games is
-offered) and copies it there. The drawer also runs where it was unpacked.
+offered) and copies it there. Before that it offers to check game.zip
+against the SHA-256 the archive was made with (game.zip.sha256), with
+Tools/SHA256; that finds an archive damaged in the download or while it
+was unpacked. The drawer also runs where it was unpacked.
 
 What is in the drawer
 ---------------------
@@ -25,7 +28,9 @@ StartGame   starts the game
 game.zip    the game's files, unchanged apart from what OpenSurge 0.6.1
             needs: the Windows program files are left out, the menu's
             MenuButtonList declaration is updated, a surge.cfg is added
+game.zip.sha256  game.zip's SHA-256, for Install-Speedy's check
 Engine/     the OpenSurge engine (below)
+Tools/      SHA256, a small command that checks a SHA-256
 CREDITS     who made the game, its art and its music
 Licences/   licences, the game's own credits.txt and README!!!.txt
 
@@ -65,6 +70,7 @@ Licences
 Licences/GPL-3.0.txt   the engine (GNU GPL 3 or later)
 Licences/SOURCE.txt    where the engine's source is, at the exact commit
 Licences/Port-scripts-MIT.txt  StartGame, the Installer script, Tools/
+Licences/SHA256.txt    Tools/SHA256 (MIT, AmiCradle Team)
 Engine/licenses/       the engine's own art, sound and font licences
 game.zip licenses/    the game's own licence texts (inside game.zip)
 

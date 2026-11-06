@@ -1,10 +1,10 @@
-; $VER: Install-Speedy standalone-rc1 (5.11.2026)
+; $VER: Install-Speedy standalone-rc2 (6.11.2026)
 ; The Amiga Installer script for Speedy the Rollerskater, an AmiCradle game port.
 ; Made by amicradle scripts/port_installer.py: change the spec, not this file.
 ; Run it from its icon, beside the Speedy drawer where the archive was unpacked.
 
 (set @app-name "Speedy the Rollerskater")
-(set #version "standalone-rc1")
+(set #version "standalone-rc2")
 (set #drawer "Speedy")
 (set #program "StartGame")
 (set #space 292969)  ; KB
@@ -30,7 +30,29 @@
 (if (<> (exists (tackon #from #program) (noreq)) 1)
     (abort "The Speedy drawer has no StartGame in it. Unpack the whole archive again."))
 
-(welcome "This installs Speedy the Rollerskater standalone-rc1 for AmigaOS 3.2 on a 68040, 68060 or 68080 with an FPU.")
+(welcome "This installs Speedy the Rollerskater standalone-rc2 for AmigaOS 3.2 on a 68040, 68060 or 68080 with an FPU.")
+
+; ---------------------------------------------------------------- the archive's own check
+; package-standalone.sh writes game.zip.sha256 (a sha256sum list) beside game.zip: with
+; Tools/SHA256 the Installer checks game.zip before anything is copied
+(set #checker (tackon #from "Tools/SHA256"))
+(set #sumlist (tackon #from "game.zip.sha256"))
+(if (and (= (exists #checker (noreq)) 1) (= (exists #sumlist (noreq)) 1))
+    (if
+        (askbool
+            (prompt "Check the SHA-256 of game.zip, Speedy the Rollerskater's data in this archive, before it is installed?")
+            (help (cat "The archive carries the SHA-256 of game.zip in game.zip.sha256. Tools/SHA256 reads game.zip and compares, which finds an archive damaged in the download or while it was unpacked. On a 68040 it takes a minute or two. Skip it if the archive " "was checked already."))
+            (choices "Check it" "Skip the check")
+            (default 1))
+        (
+            (working "Checking the SHA-256 of game.zip.")
+            (set #sha-rc (run (cat "\"" #checker "\" CHECK=\"" #sumlist "\" >NIL:") (safe)))
+            (if (<> #sha-rc 0)
+                (abort "game.zip in this archive is damaged: its SHA-256 is not the one in game.zip.sha256. Download the archive again and unpack all of it. Nothing has been installed."))
+            (message "The SHA-256 of game.zip matches the one the archive was made with.")
+        )
+    )
+)
 
 ; where: the parent drawer
 (set #default
@@ -101,7 +123,7 @@
 (complete 100)
 (if @pretend
     (message (cat "Pretend: nothing was copied or changed. Speedy the Rollerskater would have gone in " #dest "."))
-    (message (cat "Speedy the Rollerskater standalone-rc1 is installed in " #dest "."
+    (message (cat "Speedy the Rollerskater standalone-rc2 is installed in " #dest "."
                   "\n\nTo start it, open the Speedy drawer and double-click the StartGame icon."
                   (if (= #kept "") "" (cat "\n\nLeft as they were: " #kept ".")))))
 (exit (quiet))

@@ -92,18 +92,24 @@ fill "$root/port/ReadMe.in" "$drawer/ReadMe"
 fill "$root/port/SOURCE.txt" "$drawer/Licences/SOURCE.txt"
 cp "$work/engine/dist/LICENSE" "$drawer/Licences/GPL-3.0.txt"
 cp "$root/LICENSE" "$drawer/Licences/Port-scripts-MIT.txt"
+# Tools/SHA256: the Installer's SHA-256 check (scripts/build-sha256.sh makes it)
+[ -f "$root/port/sha256/SHA256" ] || { echo "port/sha256/SHA256 is missing: run scripts/build-sha256.sh" >&2; exit 1; }
+mkdir -p "$drawer/Tools"
+cp "$root/port/sha256/SHA256" "$drawer/Tools/SHA256"
+cp "$root/port/sha256/LICENCE.txt" "$drawer/Licences/SHA256.txt"
 
 if [ "$BUNDLE_DATA" = yes ]; then
     (cd "$root" && SOURCE_DATE_EPOCH=$(git log -1 --format=%ct HEAD) \
         ./scripts/prepare-amiga-port.sh "$game_dir" "$work/prepared" >/dev/null)
     mv "$work/prepared/game.zip" "$drawer/game.zip"
+    # the Installer checks game.zip against this list before it copies anything
+    (cd "$drawer" && sha256sum game.zip > game.zip.sha256)
     cp "$root/CREDITS" "$drawer/CREDITS"
     cp "$root/port/icons/CREDITS.info" "$drawer/"
     for f in $GAME_CREDIT_FILES; do
         cp "$game_dir/$f" "$drawer/Licences/$GAME_SLUG-$f"
     done
 else
-    mkdir -p "$drawer/Tools"
     if [ "${PATCH_MENUBUTTONLIST:-no}" = yes ]; then
         cp "$root/port/PatchMenu.rexx" "$drawer/Tools/PatchMenu.rexx"
     fi
