@@ -43,8 +43,24 @@ ROOT = Path(__file__).resolve().parents[1]
 PORT = ROOT / "port"
 
 
-def q(text: str) -> str:
+LITERAL_MAX = 240     # Installer refuses a string literal past 512 characters ("too long")
+
+
+def q1(text: str) -> str:
     return '"' + text.replace("\\", "\\\\").replace('"', '\\"').replace("\n", "\\n") + '"'
+
+
+def q(text: str) -> str:
+    """An Installer string; a long one becomes (cat "..." "...") of short literals."""
+    if len(text) <= LITERAL_MAX:
+        return q1(text)
+    parts, rest = [], text
+    while len(rest) > LITERAL_MAX:
+        cut = rest.rfind(" ", 0, LITERAL_MAX) + 1 or LITERAL_MAX
+        parts.append(rest[:cut])
+        rest = rest[cut:]
+    parts.append(rest)
+    return "(cat " + " ".join(q1(p) for p in parts) + ")"
 
 
 CHECKER = "Tools/SHA256"

@@ -41,7 +41,7 @@
     (if
         (askbool
             (prompt "Check the SHA-256 of game.zip, Speedy the Rollerskater's data in this archive, before it is installed?")
-            (help "The archive carries the SHA-256 of game.zip in game.zip.sha256. Tools/SHA256 reads game.zip and compares, which finds an archive damaged in the download or while it was unpacked. On a 68040 it takes a minute or two. Skip it if the archive was checked already.")
+            (help (cat "The archive carries the SHA-256 of game.zip in game.zip.sha256. Tools/SHA256 reads game.zip and compares, which finds an archive damaged in the download or while it was unpacked. On a 68040 it takes a minute or two. Skip it if the archive " "was checked already."))
             (choices "Check it" "Skip the check")
             (default 1))
         (
