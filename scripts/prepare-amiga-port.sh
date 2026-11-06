@@ -1,4 +1,6 @@
 #!/bin/sh
+# The shared-engine route: game.zip and a StartGame for an engine installed
+# at DH1:OpenSurgeRC1. scripts/package-standalone.sh uses the same game.zip.
 set -eu
 
 if [ "$#" -ne 2 ]; then
@@ -28,8 +30,12 @@ if [ ! -f "$staging_dir/surge.cfg" ]; then
 fi
 
 mkdir -p "$output_dir"
-(cd "$staging_dir" && zip -0 -q -r "$output_dir/game.zip" .)
-cp port/StartGame "$output_dir/StartGame"
+# A fixed order and fixed dates (SOURCE_DATE_EPOCH, else the newest file's)
+# make the same game.zip from the same download.
+epoch=${SOURCE_DATE_EPOCH:-$(find "$staging_dir" -type f -printf '%T@\n' | sort -n | tail -1 | cut -d. -f1)}
+find "$staging_dir" -exec touch -h -d "@$epoch" {} +
+(cd "$staging_dir" && find . -mindepth 1 | LC_ALL=C sort | TZ=UTC zip -X -0 -q -@ "$output_dir/game.zip")
+cp port/StartGame.shared "$output_dir/StartGame"
 chmod +x "$output_dir/StartGame"
 cp README.md "$output_dir/AMIGA-PORT.md"
 

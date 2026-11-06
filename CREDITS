@@ -1,0 +1,69 @@
+Speedy the Rollerskater - credits
+=================================
+
+Speedy the Rollerskater (Full Version) is by SynfigMaster91, made with the
+Open Surge Engine. Its page, where the original Windows download is:
+
+  https://sonicfangameshq.com/forums/showcase/speedy-the-rollerskater.977/
+
+The author's terms, as written on that page and in the game's README!!!.txt:
+
+  "This game is free and open source. It means you can share, study and
+   modify/fix something you don't like or you think it needs a fix.
+   If you share or put this game in somewhere, please give me credit."
+
+This AmigaOS 3 package shares the game unchanged apart from what OpenSurge
+0.6.1 needs to run it (the Windows program files are left out, the menu
+script's MenuButtonList declaration is updated and a surge.cfg is added).
+All credit for the game goes to SynfigMaster91 and the people below.
+
+Game created by SynfigMaster91. Engine by Alexandre Martins (Open Surge
+Engine and SurgeScript, https://opensurge2d.org/). The game's own credits,
+from its credits.txt (Licences/speedy-credits.txt in the package), follow.
+
+Graphics: SynfigMaster91, Alexandre Martins, ansimuz, GrafxKid, bcsilva,
+kmatlockii, KnoblePersona, DidiGameB, Luis Zuno (@ansimus), AntumDeluge
+(Jordan Irwin), Georges "TRaK" Grondin, Shozuki, Hapiel, Albert Manhattan,
+surt, Amaweks, bleutailfly, Master484, IllusionOfMana, Aeynit, William
+Thompsonj and Stephen "Redshrike" Challener, SCHS_SCHS, Enjl, "and many
+others I can't remember but I thank and credit for their resources and all
+the Open Surge staff."
+
+Music (from the Newgrounds Audio Portal and OpenGameArt.org):
+  Title Theme: Adventure Theme - CleytonKauffman
+  Seaside Beach Act 1: Sunny Paradise 1 (jobromedia)
+  Seaside Beach Act 2: Sunny Paradise 2 (jobromedia)
+  Seaside Beach Act 3: Scurrying along the beach (trevor)
+  Deep Jungle Act 1: Hypnotic Chill (Extended 4 minute mix) (cynicmusic)
+  Deep Jungle Act 2: Jungle Jam revised (dullsworth)
+  Deep Jungle Act 3: jungle (gamerjaym)
+  Honey Hive Act 1: Work with Magic (Whirlguy)
+  Honey Hive Act 2: Happy Cave (EctiBot)
+  Honey Hive Act 3: Underground Cave (Aoraz)
+  Forgotten Ruins Act 1: Spiritual Temple (Criminal-23)
+  Forgotten Ruins Act 2 and 3: Within the Depths (SvDMIssion2)
+  Sunken Ruins Act 1: Crystal Cave (song18) (cynicmusic)
+  Sunken Ruins Act 2: Wider Waters (jobromedia)
+  Sunken Ruins Act 3: Sacred (jobromedia)
+  Candy Factory Act 1: Full of Candy (Justin Fleurimond Menard)
+  Candy Factory Act 2 and 3: Juhani Junkala [Retro Game Music Pack] Level 1
+    (SubspaceAudio)
+  Air Ice Base Act 1: Cold Steel Zone (ColdOneK)
+  Air Ice Base Act 2: The Final Encounter (Syrapt0r)
+  Boss Fights: NES Shooter Music - Venus (SketchyLogic)
+  Final Boss: Battle in the Winter (jobromedia)
+  Victory Theme: Rainbow Rush (Yubatake)
+  Credits: Chippytoon - RPG Town/Travel or Credits Song (BBandRage)
+  Act Clear: Open Sonic - Goal
+  Open Sonic original music files composed by Di Rodrigues
+
+Special thanks (from the game): Sega and Sonic Team (inspiration), Alexandre
+Martins (for creating Open Surge), the whole Open Surge Community, and
+everyone for playing.
+
+Speedy the Rollerskater is inspired by the Sonic the Hedgehog games; it is
+not made by or for SEGA. The engine's and the game's art and music keep
+the licences in Engine/licenses/ and in the game's own licenses/ folder
+(inside game.zip).
+
+AmigaOS 3 port: the AmiCradle Team, https://github.com/DalsinAI/amigaspeedy

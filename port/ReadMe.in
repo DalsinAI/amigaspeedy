@@ -1,0 +1,72 @@
+Speedy the Rollerskater for AmigaOS 3 - @RELEASE_VERSION@
+==========================================================
+
+Speedy the Rollerskater (Full Version) by SynfigMaster91, a free and open
+source platform game made with the Open Surge Engine, with the Amiga
+OpenSurge engine inside its drawer: unpack, install and play. Nothing else
+needs installing first.
+
+The author's terms (from the game's page and its README!!!.txt): "This game
+is free and open source. It means you can share, study and modify/fix
+something you don't like or you think it needs a fix. If you share or put
+this game in somewhere, please give me credit." The credit is in CREDITS.
+
+  https://sonicfangameshq.com/forums/showcase/speedy-the-rollerskater.977/
+
+Installing
+----------
+Double-click Install-Speedy beside the Speedy drawer: it checks the CPU,
+FPU and GFOpenGPU, asks where the Speedy drawer should go (Work:Games is
+offered) and copies it there. The drawer also runs where it was unpacked.
+
+What is in the drawer
+---------------------
+StartGame   starts the game
+game.zip    the game's files, unchanged apart from what OpenSurge 0.6.1
+            needs: the Windows program files are left out, the menu's
+            MenuButtonList declaration is updated, a surge.cfg is added
+Engine/     the OpenSurge engine (below)
+CREDITS     who made the game, its art and its music
+Licences/   licences, the game's own credits.txt and README!!!.txt
+
+What it needs
+-------------
+- AmigaOS 3.2 (Installer 43.3 or newer for Install-Speedy)
+- a 68040 or 68060 with an FPU
+- GFOpenGPU: LIBS:GFOpenGPU/GL.module and SDL2.module (as on AmiCradle)
+- about 300 MB free on the hard disk, and plenty of Fast RAM
+
+The engine
+----------
+Engine/ is Amiga OpenSurge, Open Surge Engine 0.6.1.3 for AmigaOS 3,
+exactly as released:
+
+  release   @ENGINE_REPO@ @ENGINE_TAG@
+  commit    @ENGINE_COMMIT@
+  archive   @ENGINE_ASSET@
+  sha256    @ENGINE_SHA256@
+  program   Engine/opensurge
+  sha256    @ENGINE_BINARY_SHA256@
+  compiler  @ENGINE_COMPILER@
+
+No separate engine install is needed: StartGame runs this copy. The engine
+keeps its settings, logfile.txt and the game's compatibility pack in
+Engine/ (Engine/.userdata). Licences/SOURCE.txt says where its source is.
+
+Starting and playing
+--------------------
+Double-click StartGame in the Speedy drawer. From a Shell, CD to the
+drawer first, then Execute StartGame. F10 switches between a window and
+the full screen. Leave the game from its own menu (Esc brings it up in
+most games).
+
+Licences
+--------
+Licences/GPL-3.0.txt   the engine (GNU GPL 3 or later)
+Licences/SOURCE.txt    where the engine's source is, at the exact commit
+Licences/Port-scripts-MIT.txt  StartGame, the Installer script, Tools/
+Engine/licenses/       the engine's own art, sound and font licences
+game.zip licenses/    the game's own licence texts (inside game.zip)
+
+The port's repository: https://github.com/DalsinAI/amigaspeedy
+(port commit @PORT_COMMIT@)

@@ -1,0 +1,28 @@
+{
+  "about": "The Workbench icons of the Speedy drawer: python3 tools/make_installer.py AMICRADLE writes them with DalsinAI/amicradle scripts/port_icons.py. The badge is Speedy's life icon (Speedy the Rollerskater images/life_icon2.png, 336,24 24x24).",
+  "drawer": {
+    "name": "Speedy"
+  },
+  "badge": "art/badge.png",
+  "icons": [
+    {
+      "file": "StartGame.info",
+      "kind": "tool",
+      "type": "project",
+      "defaultTool": "C:IconX",
+      "stack": 262144,
+      "toolTypes": [
+        "WINDOW=CON:40/40/560/140/Speedy/AUTO/CLOSE/WAIT",
+        "DELAY=0"
+      ]
+    },
+    {
+      "file": "ReadMe.info",
+      "kind": "readme"
+    },
+    {
+      "file": "CREDITS.info",
+      "kind": "readme"
+    }
+  ]
+}

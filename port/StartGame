@@ -1,3 +1,24 @@
-; Launch through the single shared Amiga OpenSurge installation.
-DH1:OpenSurgeRC1/opensurge --game DH1:Speedy/game.zip
-
+; $VER: StartGame standalone-rc1 (5.11.2026)
+; Start Speedy the Rollerskater with the OpenSurge engine in this drawer (Speedy/Engine).
+; From Workbench: double-click the StartGame icon (IconX starts it here).
+; From a Shell: CD to the Speedy drawer first, then: Execute StartGame
+FailAt 21
+IF NOT EXISTS Engine/opensurge
+  Echo "StartGame: Engine/opensurge is not in the current drawer."
+  Echo "CD to the Speedy drawer first, or start the game from its icon."
+  Quit 20
+ENDIF
+IF NOT EXISTS game.zip
+  Echo "StartGame: game.zip is missing. Unpack the whole archive again."
+  Quit 20
+ENDIF
+Set osgame game.zip
+Stack 262144
+; the engine finds its files from the path it is started by, and names its
+; settings drawer after the game's: give it this drawer's full path
+Set osdir `CD`
+CD Engine
+"$osdir/Engine/opensurge" --game "$osdir/$osgame"
+CD "$osdir"
+Unset osgame
+Unset osdir

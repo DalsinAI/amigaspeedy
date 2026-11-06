@@ -1,0 +1,16 @@
+{
+  "name": "Speedy the Rollerskater",
+  "version": "standalone-rc1",
+  "drawer": "Speedy",
+  "program": "StartGame",
+  "cpu": "68040",
+  "fpu": true,
+  "space": 300000000,
+  "modules": [
+    "GL.module",
+    "SDL2.module"
+  ],
+  "keep": [],
+  "parent": "Work:Games",
+  "badge": "icons/art/badge.png"
+}
