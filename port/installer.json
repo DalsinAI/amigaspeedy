@@ -1,6 +1,6 @@
 {
   "name": "Speedy the Rollerskater",
-  "version": "standalone-rc1",
+  "version": "standalone-rc2",
   "drawer": "Speedy",
   "program": "StartGame",
   "cpu": "68040",
@@ -12,5 +12,9 @@
   ],
   "keep": [],
   "parent": "Work:Games",
-  "badge": "icons/art/badge.png"
+  "badge": "icons/art/badge.png",
+  "selfcheck": {
+    "file": "game.zip",
+    "list": "game.zip.sha256"
+  }
 }

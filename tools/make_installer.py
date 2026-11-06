@@ -18,6 +18,17 @@ an archive the Amiga cannot unpack (RAR) is unpacked by the player first.
 A game.zip made on another computer by scripts/prepare-amiga-port.sh is
 taken as it is. With "patch_menu" the old MenuButtonList declaration is
 brought up to OpenSurge 0.6.1 by Tools/PatchMenu.rexx (ARexx).
+
+The download's SHA-256 can be checked on the Amiga too: the drawer carries
+Tools/SHA256 (port/sha256, built by scripts/build-sha256.sh), and when it is
+there the Installer asks (default yes) whether to check the archive before
+it is unpacked. A player who gives an unpacked folder (always so for a RAR
+archive) is asked whether they still have the archive: if so its SHA-256 is
+checked, if not the folder is checked by the sizes of its files only.
+
+A game whose data ships in the archive ("selfcheck": a file in the drawer
+and the sha256sum list package-standalone.sh writes beside it) gets a check
+of that file before anything is copied.
 MIT, Copyright (c) 2026 AmiCradle Team.
 """
 from __future__ import annotations
@@ -34,6 +45,65 @@ PORT = ROOT / "port"
 
 def q(text: str) -> str:
     return '"' + text.replace("\\", "\\\\").replace('"', '\\"').replace("\n", "\\n") + '"'
+
+
+CHECKER = "Tools/SHA256"
+
+
+def sha_check(w, indent: str, name_var: str, label: str, page: str) -> None:
+    """Lines that check #sha256 against the file in name_var with Tools/SHA256."""
+    i = indent
+    w(f"{i}(working {q('Checking the SHA-256 of ' + label + '. On a 68040 this takes a few minutes.')})")
+    w(f"{i}(set #sha-rc (run (cat \"\\\"\" #checker \"\\\" \\\"\" {name_var} \"\\\" EXPECT=\" #sha256 \" >NIL:\") (safe)))")
+    w(f"{i}(if (<> #sha-rc 0)")
+    w(f"{i}    (abort (cat {name_var} {q(' is not the ' + label + ' this port was made for: its SHA-256 is not ')} #sha256 "
+      f"{q('. It was damaged in the download or is another version. Download it again from ' + page)})))")
+    w(f"{i}(message (cat {q('The SHA-256 of ')} {name_var} {q(' matches:')} \"\\n\\n\" #sha256))")
+
+
+def ask_archive(w, indent: str, d: dict, me: str) -> None:
+    """askfile for the archive, then its existence and size."""
+    i, page = indent, d["page"]
+    w(f"{i}(set #arc")
+    w(f"{i}    (askfile")
+    w(f"{i}        (prompt {q('Choose ' + d['archive'] + ', as you downloaded it.')})")
+    w(f"{i}        (help @askfile-help)")
+    w(f"{i}        (default \"RAM:\")))")
+    w(f"{i}(if (<> (exists #arc (noreq)) 1)")
+    w(f"{i}    (abort (cat {q('There is no file ')} #arc \".\")))")
+    w(f"{i}(if (<> (getsize #arc) #archive-size)")
+    w(f"{i}    (abort (cat #arc {q(' is ')} (getsize #arc) {q(' bytes, not the ' + str(d['archive_size']) + ' of ' + d['archive'] + '. Download it again from ' + page)})))")
+
+
+def self_check(s: dict, c: dict) -> str:
+    """Before anything is copied: a bundled file against the list packaged beside it."""
+    name = s["name"]
+    f, lst = c["file"], c["list"]
+    o = []
+    w = o.append
+    w("; ---------------------------------------------------------------- the archive's own check")
+    w(f"; package-standalone.sh writes {lst} (a sha256sum list) beside {f}: with")
+    w(f"; {CHECKER} the Installer checks {f} before anything is copied")
+    w(f"(set #checker (tackon #from {q(CHECKER)}))")
+    w(f"(set #sumlist (tackon #from {q(lst)}))")
+    w("(if (and (= (exists #checker (noreq)) 1) (= (exists #sumlist (noreq)) 1))")
+    w("    (if")
+    w("        (askbool")
+    w(f"            (prompt {q('Check the SHA-256 of ' + f + ', ' + name + chr(39) + 's data in this archive, before it is installed?')})")
+    w(f"            (help {q('The archive carries the SHA-256 of ' + f + ' in ' + lst + '. ' + CHECKER + ' reads ' + f + ' and compares, which finds an archive damaged in the download or while it was unpacked. On a 68040 it takes a minute or two. Skip it if the archive was checked already.')})")
+    w("            (choices \"Check it\" \"Skip the check\")")
+    w("            (default 1))")
+    w("        (")
+    w(f"            (working {q('Checking the SHA-256 of ' + f + '.')})")
+    w("            (set #sha-rc (run (cat \"\\\"\" #checker \"\\\" CHECK=\\\"\" #sumlist \"\\\" >NIL:\") (safe)))")
+    w("            (if (<> #sha-rc 0)")
+    w(f"                (abort {q(f + ' in this archive is damaged: its SHA-256 is not the one in ' + lst + '. Download the archive again and unpack all of it. Nothing has been installed.')}))")
+    w(f"            (message {q('The SHA-256 of ' + f + ' matches the one the archive was made with.')})")
+    w("        )")
+    w("    )")
+    w(")")
+    w("")
+    return "\n".join(o) + "\n"
 
 
 def data_step(s: dict, d: dict) -> str:
@@ -53,9 +123,19 @@ def data_step(s: dict, d: dict) -> str:
     w(f"(set #game (tackon #dest \"Game\"))")
     w("(set #gamezip (tackon #dest \"game.zip\"))")
     w("(set #have (or (= (exists (tackon #game \"languages\") (noreq)) 2) (= (exists #gamezip (noreq)) 1)))")
+    w(f"(set #sha256 {q(d['sha256'])})")
+    w(f"; {CHECKER} (port/sha256 in the port's repository) checks the download's SHA-256")
+    w(f"(set #checker (tackon #from {q(CHECKER)}))")
+    w("(set #can-check (= (exists #checker (noreq)) 1))")
     intro = (f"{name}'s own files are not part of this archive and are not given out with it. "
              f"Download the game yourself from its page:\n\n{page}\n\n"
              f"The file there is called {d['archive']} ({d['archive_size']} bytes; SHA-256 {d['sha256']}).")
+    if unzip:
+        intro += "\n\nThe Installer checks its size, and can check its SHA-256 too."
+    else:
+        intro += ("\n\nIt is a RAR archive, which AmigaOS cannot unpack: unpack it first and give the "
+                  "Installer the folder. The folder is checked by the sizes of some of its files; if you "
+                  "still have the archive, the Installer can check its SHA-256 as well.")
     choices = []
     if unzip:
         choices.append(("archive", f"The archive I downloaded ({d['archive']})"))
@@ -88,15 +168,19 @@ def data_step(s: dict, d: dict) -> str:
     if unzip:
         w(f"(if (= #how {idx['archive']})")
         w("    (")
-        w("        (set #arc")
-        w("            (askfile")
-        w(f"                (prompt {q('Choose ' + d['archive'] + ', as you downloaded it.')})")
-        w("                (help @askfile-help)")
-        w("                (default \"RAM:\")))")
-        w("        (if (<> (exists #arc (noreq)) 1)")
-        w(f"            (abort (cat {q('There is no file ')} #arc \".\")))")
-        w("        (if (<> (getsize #arc) #archive-size)")
-        w(f"            (abort (cat #arc {q(' is ')} (getsize #arc) {q(' bytes, not the ' + str(d['archive_size']) + ' of ' + d['archive'] + '. Download it again from ' + page)})))")
+        ask_archive(w, "        ", d, me)
+        w("        (if #can-check")
+        w("            (if")
+        w("                (askbool")
+        w(f"                    (prompt {q('Check the SHA-256 of ' + d['archive'] + ' before it is unpacked?')})")
+        w(f"                    (help {q('Its size is right. ' + CHECKER + ' (in this archive) reads the whole file and compares its SHA-256 with ' + d['sha256'] + ', the one of the download this port was made for. That finds a damaged download or another version of the game. On a 68040 it takes a few minutes. Skip it if you checked the file on another computer.')})")
+        w("                    (choices \"Check it\" \"Skip the check\")")
+        w("                    (default 1))")
+        w("                (")
+        sha_check(w, "                    ", "#arc", d["archive"], page)
+        w("                )")
+        w("            )")
+        w("        )")
         w("        (if (<> (exists \"SYS:Utilities/GFOpenCompress\" (noreq)) 1)")
         w(f"            (abort {q('SYS:Utilities/GFOpenCompress, which unpacks the archive, is not on this Amiga. Unpack ' + d['archive'] + ' with an unzip tool, then run ' + me + ' again and choose the ' + root + ' folder.')}))")
         w("        (set #unpack (tackon #dest \"Unpack\"))")
@@ -119,6 +203,29 @@ def data_step(s: dict, d: dict) -> str:
     w("            (set #src (tackon #src #root)))")
     w("        (if (<> (fileonly #src) #root)")
     w(f"            (abort (cat #src {q(' is not the ' + root + ' folder. Choose the folder that unpacking ' + d['archive'] + ' made.')})))")
+    folder_prompt = (f"The folder's files are checked by their sizes, which finds a folder that is incomplete "
+                     f"or from another version. Do you still have {d['archive']}? If you do, the Installer "
+                     "can check its SHA-256 as well.")
+    folder_help = (f"{CHECKER} (in this archive) reads {d['archive']} and compares its SHA-256 with "
+                   f"{d['sha256']}, the one of the download this port was made for. ")
+    if not unzip:
+        folder_help += ("The Amiga cannot unpack the RAR archive itself, so the game's files are always "
+                        "copied from the folder; the archive is only checked. ")
+    folder_help += ("If you no longer have the archive, choose Sizes only: the folder is then checked by "
+                    "the sizes of a few of its files, not by a SHA-256.")
+    w("        (if #can-check")
+    w("            (if")
+    w("                (askbool")
+    w(f"                    (prompt {q(folder_prompt)})")
+    w(f"                    (help {q(folder_help)})")
+    w("                    (choices \"Check the archive\" \"Sizes only\")")
+    w("                    (default 1))")
+    w("                (")
+    ask_archive(w, "                    ", d, me)
+    sha_check(w, "                    ", "#arc", d["archive"], page)
+    w("                )")
+    w("            )")
+    w("        )")
     w("    )")
     w(")")
     w(f"(if (<> #src \"\")")
@@ -153,7 +260,11 @@ def data_step(s: dict, d: dict) -> str:
         w("            (")
         w("                (run \"SYS:System/RexxMast >NIL:\")")
         w("                (run \"SYS:Rexxc/WaitForPort REXX\")")
-        w("                (run (cat \"SYS:Rexxc/RX \\\"\" (tackon #dest \"Tools/PatchMenu.rexx\") \"\\\" \\\"\" (tackon #game \"scripts/ui/menubuttonlist.ss\") \"\\\"\"))")
+        w("                ; RX takes a quoted first word as a program's text, not its name: so")
+        w("                ; the script is run from T:, whose name has no spaces in it")
+        w("                (copyfiles (source (tackon #dest \"Tools/PatchMenu.rexx\")) (dest \"T:\") (optional \"force\"))")
+        w("                (run (cat \"SYS:Rexxc/RX T:PatchMenu.rexx \\\"\" (tackon #game \"scripts/ui/menubuttonlist.ss\") \"\\\"\"))")
+        w("                (delete \"T:PatchMenu.rexx\" (optional \"force\"))")
         w("            )")
         w("        )")
     if unzip:
@@ -203,6 +314,12 @@ def main() -> int:
         if anchor not in text:
             raise SystemExit("port_installer's script has changed: no (set @default-dest #dest)")
         text = text.replace(anchor, data_step(s, data) + "\n" + anchor, 1)
+    selfcheck = raw.get("selfcheck")
+    if selfcheck:
+        anchor = "; where: the parent drawer\n"
+        if anchor not in text:
+            raise SystemExit("port_installer's script has changed: no '; where: the parent drawer'")
+        text = text.replace(anchor, self_check(s, selfcheck) + anchor, 1)
     (PORT / s["script"]).write_bytes(text.encode("latin-1"))
     icons = PORT / "icons"
     out = port_installer.icon(s, spec_path.parent, icons)
