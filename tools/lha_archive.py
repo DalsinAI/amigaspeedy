@@ -17,7 +17,7 @@ design); the code here is our own. read() exists so tests can check the
 writer without UNIX LhA; tests also run lha/lhasa/7z when the host has them.
 
 Copied unchanged (apart from this paragraph) from DalsinAI/amicradle
-scripts/lha_archive.py at 97819a9ff0b9075929e6c53a7a353792e294bdab, so the
+scripts/lha_archive.py at 1d78342d5b6ccc5ad053882f9ca342b35140909a, so the
 release archive is made without a checkout of AmiCradle.
 """
 from __future__ import annotations
