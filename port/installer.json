@@ -12,7 +12,7 @@
   ],
   "keep": [],
   "parent": "Work:Games",
-  "badge": "icons/art/badge.png",
+  "badge": "icons/art/speedy.png",
   "selfcheck": {
     "file": "game.zip",
     "list": "game.zip.sha256"

@@ -1,9 +1,9 @@
 {
-  "about": "The Workbench icons of the Speedy drawer: python3 tools/make_installer.py AMICRADLE writes them with DalsinAI/amicradle scripts/port_icons.py. The badge is Speedy's life icon (Speedy the Rollerskater images/life_icon2.png, 336,24 24x24).",
+  "about": "The Workbench icons of the Speedy drawer: python3 tools/make_installer.py AMICRADLE writes them with DalsinAI/amicradle scripts/port_icons.py. The art (art/speedy.svg, drawn as an OS 3.5 GlowIcon: shaped, shaded, see-through round the edges) is The AmiCradle Team's own, under the same terms as the other Amiga files; art/speedy.png is it rendered at 128 x 128. The badge is Speedy's life icon (Speedy the Rollerskater images/life_icon2.png, 336,24 24x24).",
   "drawer": {
     "name": "Speedy"
   },
-  "badge": "art/badge.png",
+  "badge": "art/speedy.png",
   "icons": [
     {
       "file": "StartGame.info",
